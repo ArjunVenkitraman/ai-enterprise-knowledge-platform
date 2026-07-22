@@ -62,6 +62,46 @@ During the memory creation phase, JavaScript registers `a`, `b`, and the `add` f
 
 During the execution phase, `10` is assigned to `a`, `20` is assigned to `b`, and `add()` is called. The call creates a function execution context. The function finds `a` and `b` in the outer global scope and prints `30`.
 
+### Execution Context Diagram
+
+When the script starts, JavaScript creates the global execution context. Calling `add()` creates another execution context inside it.
+
+```text
+Global Execution Context
+├── Memory Creation Phase
+│   ├── a   → unavailable until initialized
+│   ├── b   → unavailable until initialized
+│   └── add → complete function definition
+│
+└── Execution Phase
+    ├── a = 10
+    ├── b = 20
+    └── add()
+         │
+         └── Function Execution Context: add
+             ├── Local variables: none
+             ├── Reads a and b from the outer scope
+             └── console.log(10 + 20) → 30
+```
+
+### Call Stack Diagram
+
+The call stack follows a last-in, first-out order. The newest execution context is always placed on top.
+
+```text
+1. Program begins       2. add() is called       3. add() finishes
+
+┌─────────────────┐     ┌─────────────────┐      ┌─────────────────┐
+│                 │     │ add() context   │      │                 │
+├─────────────────┤     ├─────────────────┤      ├─────────────────┤
+│ Global context  │     │ Global context  │      │ Global context  │
+└─────────────────┘     └─────────────────┘      └─────────────────┘
+
+     PUSH global             PUSH add()               POP add()
+```
+
+After the entire script finishes, the global execution context is also removed from the stack.
+
 ## Key Points
 
 - JavaScript creates a global execution context when a script begins.
@@ -94,3 +134,11 @@ What happens during the Execution Phase?
 Does every function create a new Execution Context? Why?
 
 Don't worry if you can't answer perfectly today—we'll revisit these after a few more lessons.
+
+## Important Difference
+
+Execution Context:
+- An environment where JavaScript executes code.
+
+Call Stack:
+- A stack data structure that stores and manages execution contexts.
