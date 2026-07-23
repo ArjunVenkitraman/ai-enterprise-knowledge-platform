@@ -224,6 +224,30 @@ function test() {
 
 **Lesson:** with `return`, `break`, `continue`, and `throw`, never put a line break right after the keyword. ASI will silently insert a semicolon and change what your code does.
 
+### Return Statement Stops Execution (Unreachable Code)
+
+Example:
+
+```javascript
+function demo() {
+    console.log("A");
+    return 100;
+    console.log("B");
+}
+console.log(demo());
+```
+
+**Output:**
+
+```text
+A
+100
+```
+
+**Reason:** As soon as `return 100;` runs, the function terminates and returns control to the caller. `console.log("B")` is never reached — it is **unreachable code**. So `demo()` produces the value `100`, and only `A` was printed from inside the function before the return.
+
+A clean interview answer: *"The return statement immediately terminates the current function execution and returns control to the caller, so any statements after it are unreachable and never execute."*
+
 ## New Terms Learned
 
 - JavaScript Engine
