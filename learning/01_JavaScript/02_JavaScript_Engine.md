@@ -190,6 +190,10 @@ function test() {
 }
 ```
 
+**Output:** `undefined`
+
+**Reason:** JavaScript inserts a semicolon immediately after `return` because the object starts on the next line.
+
 At first glance this looks like it returns an object with `value: 10`. It does not. It returns `undefined`.
 
 The reason is ASI. When the engine sees `return` at the end of a line, its rules tell it to insert a semicolon right after the `return` keyword. So the engine actually reads the code like this:
@@ -244,15 +248,15 @@ function test() {
 
 ## Mistakes I Made Today
 
-1.
-2.
-3.
+1. I predicted `test()` would return the object `{ value: a }`, so I said the output was `10`. The real output is `undefined`, because ASI inserts a semicolon right after `return`.
+2. For the `demo()` example I said the output was `A B 100`. I assumed every line inside the function runs. The real output is `A 100`, because `return` immediately stops the function and `console.log("B")` is unreachable code.
+3. In both cases I answered based on how I *read* the code as a human, not on how the JavaScript engine *executes* it line by line.
 
 ## What I Learned
 
-1.
-2.
-3.
+1. ASI can silently insert a semicolon after `return` when the value starts on the next line, changing `return { ... }` into `return;`, so the function returns `undefined`.
+2. A `return` statement terminates the function immediately and returns control to the caller. Any statement written after it is unreachable code and never runs.
+3. To get the right answer, simulate execution the way the engine does: track each execution context on the call stack (LIFO), and remember the innermost function context is destroyed first.
 
 ## Interview Keywords
 
